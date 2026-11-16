@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#e11d48">
+<title>부동산 중개수수료 계산기 2026 · 복비 상한과 깎았을 때 금액까지</title>
+<meta name="description" content="매매·전세·월세 복비를 2026년 법정 요율표로 계산합니다. 월세 환산보증금(×100·×70), 5천만원 미만 한도액(25만·20만·30만원), 9억·12억·15억 구간 절벽, 주거용 오피스텔 0.5%·0.4% 특례, 주택 외 0.9%, 분양권 거래금액 산정, 부가세 일반 10%·간이 4%까지 반영. 상한요율은 최대치일 뿐이라 협의 슬라이더로 깎았을 때 금액도 함께 보여줍니다. 설치 없이 브라우저에서 동작하고 입력값은 전송되지 않습니다.">
+<meta property="og:title" content="부동산 중개수수료 계산기 2026 · 복비 상한과 깎았을 때 금액까지">
+<meta property="og:description" content="8억 9,900만원과 9억원은 복비가 90만원 차이 납니다. 법정 상한만이 아니라 협의로 깎았을 때 실제로 낼 금액까지 계산합니다. 100% 내 기기에서 처리.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://hwj-hub.github.io/brokerage_fee/">
+<!-- 링크 미리보기 그림: 스크래퍼는 절대 주소만 읽으므로 배포 주소로 적는다. 그림은 make_thumbnail.py 가 만든 og-image.png(1200×630) -->
+<meta property="og:image" content="https://hwj-hub.github.io/brokerage_fee/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="중개수수료 계산기 — 매매 9억원의 법정 상한 450만원과 협의 슬라이더를 내렸을 때의 360만원, 그리고 8억 9,900만원과의 구간 절벽 비교 막대">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="부동산 중개수수료 계산기 2026 · 복비 상한과 깎았을 때 금액">
+<meta name="twitter:description" content="요율표의 숫자는 정가가 아니라 상한입니다. 월세 환산보증금·한도액·9억 절벽까지 브라우저에서 바로.">
+<meta name="twitter:image" content="https://hwj-hub.github.io/brokerage_fee/og-image.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='24' fill='%23e11d48'/%3E%3Cpath d='M50,18L86,50H73V82H27V50H14Z' fill='%23fff'/%3E%3Crect x='42' y='58' width='16' height='24' rx='3' fill='%23e11d48'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{box-sizing:border-box}
+:root{
+  color-scheme:light dark;
+  --bg:#fdf2f5; --card:#fff; --card2:#fdf6f8; --fg:#1c0a11; --muted:#755460; --line:#f4dce3;
+  --accent:#e11d48; --accent2:#fda4af; --afg:#fff;
+  --ok:#0f9d58; --okbg:#e7f5ee; --warn:#b45309; --warnbg:#fdf3e3; --danger:#dc2626; --dangerbg:#fdecec;
+  --hi:#e11d48; --hibg:#fde4ea;
+  --p1:#e11d48; --p1bg:#fde4ea; --p2:#4338ca; --p2bg:#e8e8fd; --p3:#0f766e; --p3bg:#dcf2ef;
+  --save:#0f9d58; --savebg:#e7f5ee; --cut:#c2410c; --cutbg:#fdefe7;
+  --shadow:0 1px 2px rgba(28,10,17,.05),0 8px 24px -14px rgba(28,10,17,.32);
+  --r:16px;
+}
+@media (prefers-color-scheme:dark){
+ :root{
+  --bg:#150609; --card:#241016; --card2:#1d0c11; --line:#3e1d27; --fg:#fdeaee; --muted:#b28896;
+  --accent:#fb7185; --accent2:#fecdd3; --afg:#2b0410;
+  --ok:#34d399; --okbg:#0c2a20; --warn:#fbbf24; --warnbg:#2a2110; --danger:#f87171; --dangerbg:#2c1414;
+  --hi:#fda4af; --hibg:#3a1220;
+  --p1:#fda4af; --p1bg:#3a1220; --p2:#a5b4fc; --p2bg:#1c1c3f; --p3:#5eead4; --p3bg:#0c2b28;
+  --save:#34d399; --savebg:#0c2a20; --cut:#fdba74; --cutbg:#2e1a0d;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px -16px rgba(0,0,0,.85);
+ }
+}
+html,body{margin:0;padding:0}
+body{background:var(--bg);color:var(--fg);line-height:1.55;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",Roboto,sans-serif;
+  -webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:820px;margin:0 auto;padding:0 14px calc(56px + env(safe-area-inset-bottom))}
+
+header{text-align:center;padding:16px 0 4px}
+.logo{display:inline-flex;align-items:center;gap:9px;font-size:22px;font-weight:800;letter-spacing:-.02em}
+.logo .ico{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-size:18px;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:var(--shadow)}
+.tag{font-size:14.5px;font-weight:600;color:var(--muted);margin:8px 0 0}
+.tag b{color:var(--fg)}
+.badges{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}
+.badge{font-size:11.5px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--hibg);color:var(--accent);border:1px solid transparent}
+.badge.gray{background:var(--card2);color:var(--muted);border-color:var(--line)}
+
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px;margin-top:14px}
+.card h2{font-size:12px;font-weight:800;color:var(--muted);margin:0 0 13px;letter-spacing:.07em;
+  display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card h2 .n{color:var(--accent);font-weight:800}
+.card h2 .sub{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:0;text-align:right;flex:0 1 auto}
+
+label.lb{display:block;font-size:12.5px;font-weight:700;color:var(--muted);margin:0 0 6px}
+label.lb em{font-style:normal;font-weight:600;color:var(--muted);opacity:.85}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row>*{flex:1 1 150px;min-width:0}
+.field{position:relative;margin-bottom:14px}
+.field:last-child{margin-bottom:0}
+input[type=text]{
+  width:100%;height:48px;padding:0 48px 0 13px;font-size:17px;font-weight:700;color:var(--fg);
+  background:var(--card2);border:1px solid var(--line);border-radius:11px;outline:none;
+  font-family:inherit;-webkit-appearance:none;appearance:none}
+input[type=text]:focus{border-color:var(--accent);box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 20%,transparent)}
+.unit{position:absolute;right:13px;bottom:15px;font-size:13px;font-weight:700;color:var(--muted);pointer-events:none}
+.hint{font-size:11.5px;color:var(--muted);margin:6px 0 0;line-height:1.55}
+.hint b{color:var(--fg)}
+.hint .em{color:var(--accent);font-weight:800}
+
+.seg{display:flex;gap:6px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:4px;flex-wrap:wrap}
+.seg button{flex:1 1 28%;min-width:78px;min-height:48px;padding:6px 4px;border:0;border-radius:9px;background:transparent;color:var(--muted);
+  font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;line-height:1.25;transition:.15s}
+.seg button .s{display:block;font-size:10.5px;font-weight:600;opacity:.82;margin-top:1px}
+.seg button.on{background:var(--accent);color:var(--afg);box-shadow:var(--shadow)}
+.seg.four button{flex:1 1 22%;min-width:70px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.chip{min-height:42px;padding:5px 12px;border-radius:99px;border:1px solid var(--line);background:var(--card2);
+  color:var(--muted);font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;transition:.15s;line-height:1.2}
+.chip:active{transform:scale(.96)}
+.chip.on{background:var(--accent);border-color:var(--accent);color:var(--afg)}
+.chip i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.75;margin-top:1px}
+
+.sw{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:46px;cursor:pointer;user-select:none}
+.sw .txt{font-size:13.5px;font-weight:700}
+.sw .txt i{display:block;font-style:normal;font-size:11.5px;font-weight:600;color:var(--muted);margin-top:1px}
+.tg{flex:0 0 auto;width:48px;height:28px;border-radius:99px;background:var(--line);position:relative;transition:.18s}
+.tg::after{content:"";position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;
+  box-shadow:0 1px 3px rgba(0,0,0,.3);transition:.18s}
+.tg.on{background:var(--accent)}
+.tg.on::after{left:23px}
+.hide{display:none !important}
+.divider{height:1px;background:var(--line);margin:14px -16px}
+
+/* 결과 카드 */
+.res{background:linear-gradient(150deg,var(--accent),var(--accent2));color:var(--afg);border:0}
+.res h2{color:rgba(255,255,255,.84)}
+.res h2 .sub{color:rgba(255,255,255,.8)}
+@media (prefers-color-scheme:dark){
+  .res h2{color:rgba(43,4,16,.72)}
+  .res h2 .sub{color:rgba(43,4,16,.68)}
+}
+.res .big{font-size:clamp(31px,9.4vw,48px);font-weight:800;letter-spacing:-.03em;line-height:1.06;margin:2px 0 0}
+.res .big small{font-size:.42em;font-weight:800;margin-left:3px}
+.res .cap{font-size:12.5px;font-weight:700;opacity:.86;margin-top:7px}
+.res .kv{display:flex;gap:8px;margin-top:14px}
+.res .kv div{flex:1;background:rgba(255,255,255,.2);border-radius:11px;padding:9px 10px;min-width:0}
+.res .kv b{display:block;font-size:10.5px;font-weight:700;opacity:.86;letter-spacing:.02em}
+.res .kv span{display:block;font-size:15px;font-weight:800;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res .kv i{display:block;font-style:normal;font-size:10px;font-weight:600;opacity:.8;margin-top:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.res .flag{display:inline-block;font-size:11.5px;font-weight:800;padding:4px 11px;border-radius:999px;
+  background:rgba(255,255,255,.27);margin-top:11px}
+.plate{margin-top:13px;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);border-radius:11px;
+  padding:10px 12px;font-size:12.5px;font-weight:700;line-height:1.6}
+.plate b{font-weight:800}
+
+/* 명세 테이블 */
+.tbl{width:100%;border-collapse:collapse;font-size:13.5px}
+.tbl td{padding:9px 0;border-bottom:1px dashed var(--line);vertical-align:top}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td:first-child{color:var(--muted);font-weight:600}
+.tbl td:last-child{text-align:right;font-weight:800;white-space:nowrap}
+.tbl .em td{font-size:15.5px;padding-top:12px}
+.tbl .em td:first-child{color:var(--fg);font-weight:800}
+.tbl .em td:last-child{color:var(--accent)}
+.tbl .op td:first-child{padding-left:12px;font-weight:500;font-size:12.5px}
+.tbl .op td:last-child{font-weight:700;font-size:12.5px;color:var(--muted)}
+.tbl .minus td:last-child{color:var(--save)}
+.tbl .rt{display:block;font-size:11px;font-weight:600;color:var(--muted);margin-top:1px}
+
+/* 협의 슬라이더 */
+.slider-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:2px}
+.slider-head .now{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1.1;min-width:0}
+.slider-head .now small{font-size:.5em;font-weight:800;margin-left:2px}
+.slider-head .now i{display:block;font-style:normal;font-size:11.5px;font-weight:700;color:var(--muted);margin-top:2px}
+.slider-head .sv{text-align:right;flex:0 0 auto}
+.slider-head .sv b{display:block;font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:.03em}
+.slider-head .sv span{display:block;font-size:17px;font-weight:800;color:var(--save);margin-top:2px;white-space:nowrap}
+.slider-head .sv.none span{color:var(--muted)}
+input[type=range]{width:100%;height:44px;-webkit-appearance:none;appearance:none;background:transparent;
+  margin:2px 0 0;padding:0;cursor:pointer}
+input[type=range]::-webkit-slider-runnable-track{height:9px;border-radius:99px;background:var(--trk,var(--line))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--card);box-shadow:var(--shadow);margin-top:-9.5px}
+input[type=range]::-moz-range-track{height:9px;border-radius:99px;background:var(--trk,var(--line))}
+input[type=range]::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--accent);
+  border:3px solid var(--card);box-shadow:var(--shadow)}
+input[type=range]:focus{outline:none}
+.scale{display:flex;justify-content:space-between;font-size:10.5px;font-weight:700;color:var(--muted);margin-top:-4px}
+
+/* 요율표 */
+.rt-tbl{width:100%;border-collapse:collapse;font-size:12.5px;margin-top:9px}
+.rt-tbl th{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-align:right;padding:0 0 6px;border-bottom:1px solid var(--line)}
+.rt-tbl th:first-child{text-align:left}
+.rt-tbl td{padding:8px 0;border-bottom:1px dashed var(--line);text-align:right;font-weight:700;white-space:nowrap}
+.rt-tbl td:first-child{text-align:left;color:var(--muted);font-weight:600;white-space:normal}
+.rt-tbl tr:last-child td{border-bottom:0}
+.rt-tbl .hl td{color:var(--accent)}
+.rt-tbl .hl td:first-child{font-weight:800}
+.rt-tbl .hl td:first-child::before{content:"\25B8 ";font-weight:800}
+
+/* 절벽 사다리 */
+.ladder{width:100%;border-collapse:collapse;font-size:13px}
+.ladder th{font-size:10.5px;font-weight:800;color:var(--muted);letter-spacing:.04em;text-align:right;
+  padding:0 0 7px;border-bottom:1px solid var(--line)}
+.ladder th:first-child{text-align:left}
+.ladder td{padding:0;border-bottom:1px dashed var(--line)}
+.ladder tr:last-child td{border-bottom:0}
+.ladder .cell{position:relative;padding:9px 0;z-index:1}
+.ladder td:first-child .cell{padding-left:9px}
+.ladder td:last-child .cell{padding-right:2px}
+.ladder .bg{position:absolute;left:0;top:3px;bottom:3px;border-radius:5px;background:var(--hibg);z-index:-1;
+  transition:width .45s cubic-bezier(.22,1,.36,1)}
+.ladder .yr{font-weight:800;font-size:13px;white-space:nowrap}
+.ladder .yr i{display:block;font-style:normal;font-size:10.5px;font-weight:600;color:var(--muted);margin-top:1px}
+.ladder .am{text-align:right;font-weight:800;white-space:nowrap;font-size:13.5px}
+.ladder .am i{display:block;font-style:normal;font-size:10.5px;font-weight:700;color:var(--cut);margin-top:1px}
+.ladder .am i.flat{color:var(--save)}
+.ladder tr.now .yr,.ladder tr.now .am{color:var(--accent)}
+.ladder tr.now .bg{background:color-mix(in srgb,var(--accent) 24%,transparent)}
+.ladder tr.cliff td{border-bottom:1px solid var(--cut)}
+
+.note{border-radius:12px;padding:11px 13px;font-size:12.5px;font-weight:600;line-height:1.65;margin-top:12px}
+.note b{font-weight:800}
+.note.ok{background:var(--okbg);color:var(--ok)}
+.note.warn{background:var(--warnbg);color:var(--warn)}
+.note.bad{background:var(--dangerbg);color:var(--danger)}
+.note.info{background:var(--card2);color:var(--muted);border:1px solid var(--line)}
+
+.mini{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.mini div{flex:1 1 30%;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:10px 11px;min-width:0}
+.mini b{display:block;font-size:11px;font-weight:700;color:var(--muted)}
+.mini span{display:block;font-size:16px;font-weight:800;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mini .g{color:var(--save)}
+.mini .a{color:var(--accent)}
+
+.btns{display:flex;gap:8px;margin-top:14px}
+.btn{flex:1;min-height:50px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--fg);
+  font-size:14.5px;font-weight:800;font-family:inherit;cursor:pointer;transition:.15s;padding:0 8px}
+.btn:active{transform:scale(.98)}
+.btn.pri{background:var(--accent);border-color:var(--accent);color:var(--afg)}
+
+details{border-top:1px dashed var(--line);padding:11px 0}
+details:first-of-type{border-top:0}
+summary{font-size:13.5px;font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;
+  align-items:center;gap:8px;min-height:44px}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";font-size:19px;font-weight:700;color:var(--muted);flex:0 0 auto}
+details[open] summary::after{content:"\2212"}
+details p{font-size:12.8px;color:var(--muted);line-height:1.75;margin:8px 0 0;font-weight:500}
+details p b{color:var(--fg);font-weight:800}
+
+footer{text-align:center;font-size:11.5px;color:var(--muted);margin-top:22px;line-height:1.8}
+footer b{color:var(--fg)}
+footer a{color:inherit}
+
+#toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translate(-50%,14px);
+  background:var(--fg);color:var(--bg);font-size:13.5px;font-weight:700;padding:11px 20px;border-radius:99px;
+  opacity:0;pointer-events:none;transition:.22s;z-index:9;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+
+@media (max-width:430px){
+  .wrap{padding:0 11px calc(52px + env(safe-area-inset-bottom))}
+  .card{padding:14px}
+  .divider{margin:13px -14px}
+  .res .kv{flex-wrap:wrap}
+  .res .kv div{flex:1 1 46%}
+  .seg button{font-size:12px;min-width:70px}
+  .seg.four button{flex:1 1 45%}
+  .mini div{flex:1 1 46%}
+  .ladder{font-size:12.5px}
+  .ladder .am{font-size:13px}
+  .slider-head .now{font-size:24px}
+}
+
+/* ══ 주의 문구 ══════════════════════════════════════════
+   개인 상황에 따라 결과가 달라질 수 있다는 점과
+   법적 책임을 지지 않는다는 점을 페이지마다 고지한다.
+   ══════════════════════════════════════════════════════ */
+.nbx{border:1px solid var(--warn);border-radius:14px;background:var(--warnbg);padding:14px 15px;margin-top:14px}
+.nbx-h{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:800;color:var(--warn);margin:0 0 10px}
+.nbx-h .ic{flex:0 0 auto;width:19px;height:19px;border-radius:6px;background:var(--warn);color:var(--warnbg);
+  font-size:12px;font-weight:800;display:grid;place-items:center;line-height:1}
+.nbx ul{list-style:none;margin:0;padding:0}
+.nbx li{position:relative;padding-left:12px;margin-bottom:7px;font-size:12px;font-weight:600;line-height:1.68;color:var(--warn)}
+.nbx li:last-child{margin-bottom:0}
+.nbx li::before{content:"·";position:absolute;left:1px;top:-1px;font-weight:800}
+.nbx li b{font-weight:800}
+.nbx .nbx-f{margin:11px 0 0;padding-top:10px;border-top:1px solid color-mix(in srgb,var(--warn) 32%,transparent);
+  font-size:12px;font-weight:700;line-height:1.72;color:var(--warn)}
+.nbx .nbx-f b{font-weight:800}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+
+  <header>
+    <div class="logo"><span class="ico">🤝</span><span>중개수수료 계산기</span></div>
+    <p class="tag"><b>법정 상한</b>만이 아니라 <b>깎았을 때</b> 낼 금액까지</p>
+    <div class="badges">
+      <span class="badge">2026년 법정 요율</span>
+      <span class="badge">매매·전세·월세</span>
+      <span class="badge gray">오피스텔·상가·분양권</span>
+      <span class="badge gray">100% 내 기기에서 처리</span>
+    </div>
+  </header>
+
+  <!-- ── 1. 계약 종류 ── -->
+  <section class="card">
+    <h2><span><span class="n">1</span> · 어떤 계약인가요?</span><span class="sub" id="dealSub"></span></h2>
+    <div class="seg" id="dealSeg">
+      <button data-d="sale" class="on">매매 · 교환<span class="s">사고파는 계약</span></button>
+      <button data-d="jeonse">전세<span class="s">보증금만</span></button>
+      <button data-d="wolse">월세 · 반전세<span class="s">보증금 + 월세</span></button>
+    </div>
+    <p class="hint" id="dealHint"></p>
+  </section>
+
+  <!-- ── 2. 물건 종류 ── -->
+  <section class="card">
+    <h2><span><span class="n">2</span> · 어떤 물건인가요?</span><span class="sub" id="propSub"></span></h2>
+    <div class="seg four" id="propSeg">
+      <button data-p="house" class="on">주택<span class="s">아파트·빌라·단독</span></button>
+      <button data-p="offi">주거용 오피스텔<span class="s">특례 요건 충족</span></button>
+      <button data-p="offi2">그 밖의 오피스텔<span class="s">요건 미달</span></button>
+      <button data-p="etc">상가·토지·공장<span class="s">주택 외</span></button>
+    </div>
+    <p class="hint" id="propHint"></p>
+
+    <div id="offiReq" class="note info hide">
+      <b>주거용 오피스텔 특례 요건 3가지</b><br>
+      ① 전용면적 85㎡ 이하 &nbsp;② 상·하수도 시설을 갖춘 전용 입식 부엌 &nbsp;③ 전용 수세식 화장실 및 목욕시설.<br>
+      하나라도 빠지면 요율이 <b>0.9%</b>로 뛰어 두 배 가까이 됩니다.
+    </div>
+
+    <div id="preRow" class="hide">
+      <div class="divider"></div>
+      <div class="sw" id="preSw">
+        <div class="txt">분양권 거래입니다<i>거래금액 = 지금까지 낸 돈(융자 포함) + 프리미엄</i></div>
+        <div class="tg" id="preTg"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. 금액 ── -->
+  <section class="card">
+    <h2><span><span class="n">3</span> · 얼마짜리 계약인가요?</span><span class="sub" id="amtSub"></span></h2>
+
+    <!-- 매매 -->
+    <div id="paneSale">
+      <div id="salePlain">
+        <div class="field">
+          <label class="lb">매매가격 <em>· 교환이면 금액이 큰 쪽</em></label>
+          <input type="text" id="price" inputmode="numeric" value="600,000,000">
+          <span class="unit">원</span>
+          <div class="chips" id="priceChips">
+            <button class="chip" data-v="300000000">3억</button>
+            <button class="chip" data-v="600000000">6억</button>
+            <button class="chip" data-v="890000000">8억 9천</button>
+            <button class="chip" data-v="900000000">9억</button>
+            <button class="chip" data-v="1200000000">12억</button>
+            <button class="chip" data-v="1500000000">15억</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="salePre" class="hide">
+        <div class="row">
+          <div class="field">
+            <label class="lb">지금까지 낸 돈 <em>· 계약금+중도금</em></label>
+            <input type="text" id="paid" inputmode="numeric" value="200,000,000">
+            <span class="unit">원</span>
+          </div>
+          <div class="field">
+            <label class="lb">프리미엄 <em>· 마이너스면 0</em></label>
+            <input type="text" id="premium" inputmode="numeric" value="50,000,000">
+            <span class="unit">원</span>
+          </div>
+        </div>
+        <p class="hint">분양가 <b>전체</b>가 아니라 <b class="em">납입액 + 프리미엄</b>이 거래금액입니다. 아직 안 낸 중도금·잔금은 빼고 계산합니다. 융자로 낸 중도금은 <b>낸 돈에 포함</b>합니다.</p>
+      </div>
+    </div>
+
+    <!-- 전세 -->
+    <div id="paneJeonse" class="hide">
+      <div class="field">
+        <label class="lb">전세보증금</label>
+        <input type="text" id="deposit" inputmode="numeric" value="300,000,000">
+        <span class="unit">원</span>
+        <div class="chips" id="depositChips">
+          <button class="chip" data-v="50000000">5천만</button>
+          <button class="chip" data-v="100000000">1억</button>
+          <button class="chip" data-v="300000000">3억</button>
+          <button class="chip" data-v="590000000">5억 9천</button>
+          <button class="chip" data-v="600000000">6억</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 월세 -->
+    <div id="paneWolse" class="hide">
+      <div class="row">
+        <div class="field">
+          <label class="lb">보증금</label>
+          <input type="text" id="wdeposit" inputmode="numeric" value="10,000,000">
+          <span class="unit">원</span>
+        </div>
+        <div class="field">
+          <label class="lb">월세 <em>· 관리비 제외</em></label>
+          <input type="text" id="monthly" inputmode="numeric" value="500,000">
+          <span class="unit">원</span>
+        </div>
+      </div>
+      <div class="chips" id="wolseChips">
+        <button class="chip" data-d="10000000" data-m="400000">1천 / 40만<i>×70 적용</i></button>
+        <button class="chip" data-d="10000000" data-m="500000">1천 / 50만</button>
+        <button class="chip" data-d="30000000" data-m="800000">3천 / 80만</button>
+        <button class="chip" data-d="50000000" data-m="1000000">5천 / 100만</button>
+        <button class="chip" data-d="100000000" data-m="1500000">1억 / 150만</button>
+      </div>
+      <div class="note info" id="convNote"></div>
+    </div>
+  </section>
+
+  <!-- ── 4. 부가세 ── -->
+  <section class="card">
+    <h2><span><span class="n">4</span> · 부가가치세는 어떻게?</span><span class="sub">중개보수와 별개</span></h2>
+    <div class="seg" id="vatSeg">
+      <button data-v="0" class="on">별도 없음<span class="s">포함 합의 · 미청구</span></button>
+      <button data-v="10">일반과세 10%<span class="s">연매출 8천만 이상</span></button>
+      <button data-v="4">간이과세 4%<span class="s">연매출 8천만 미만</span></button>
+    </div>
+    <p class="hint" id="vatHint"></p>
+  </section>
+
+  <!-- ── 결과 ── -->
+  <section class="card res">
+    <h2><span>내가 낼 중개수수료</span><span class="sub" id="resSub"></span></h2>
+    <div class="big" id="resBig">0<small>원</small></div>
+    <div class="cap" id="resCap"></div>
+    <div class="kv">
+      <div><b>거래금액</b><span id="kvAmt">-</span><i id="kvAmtSub"></i></div>
+      <div><b>상한요율</b><span id="kvRate">-</span><i id="kvRateSub"></i></div>
+      <div><b>법정 상한</b><span id="kvCap">-</span><i id="kvCapSub"></i></div>
+      <div><b>부가세</b><span id="kvVat">-</span><i id="kvVatSub"></i></div>
+    </div>
+    <span class="flag" id="resFlag"></span>
+    <div class="plate" id="resPlate"></div>
+  </section>
+
+  <!-- ── 5. 협의 ── -->
+  <section class="card">
+    <h2><span><span class="n">5</span> · 얼마나 깎을까요?</span><span class="sub">상한요율 이내에서 협의</span></h2>
+    <div class="slider-head">
+      <div class="now" id="negRate">0.40<small>%</small><i id="negOf">상한 그대로</i></div>
+      <div class="sv none" id="negSvWrap"><b>아끼는 금액</b><span id="negSave">0원</span></div>
+    </div>
+    <input type="range" id="negSlider" min="50" max="100" step="1" value="100">
+    <div class="scale"><span>반값 협의</span><span>상한 그대로</span></div>
+    <div class="chips" id="negChips">
+      <button class="chip on" data-n="100">상한 그대로<i>협의 없음</i></button>
+      <button class="chip" data-n="90">10% 할인</button>
+      <button class="chip" data-n="80">20% 할인</button>
+      <button class="chip" data-n="70">30% 할인</button>
+      <button class="chip" data-n="50">반값 복비</button>
+    </div>
+    <div class="note info">
+      법 조문은 <b>“상한요율 이내에서 중개의뢰인과 개업공인중개사가 서로 협의하여 결정한다”</b>입니다.
+      요율표에 적힌 숫자는 정가가 아니라 <b>최대치</b>예요. 계약서에 도장 찍기 <b>전</b>에 중개보수를 정하고,
+      <b>중개대상물 확인·설명서</b>의 중개보수란에 합의한 금액을 적어두면 나중에 말이 바뀌지 않습니다.
+    </div>
+  </section>
+
+  <!-- ── 6. 명세 ── -->
+  <section class="card">
+    <h2><span><span class="n">6</span> · 계산 명세</span><span class="sub" id="detailSub"></span></h2>
+    <table class="tbl" id="detailTbl"></table>
+    <div class="mini">
+      <div><b>나 한 사람</b><span class="a" id="mOne">-</span></div>
+      <div><b>쌍방 합계</b><span id="mBoth">-</span></div>
+      <div><b>거래금액 대비</b><span id="mEff">-</span></div>
+    </div>
+    <div id="detailNote"></div>
+    <div class="btns">
+      <button class="btn pri" id="copyBtn">결과 복사</button>
+      <button class="btn" id="resetBtn">초기화</button>
+    </div>
+  </section>
+
+  <!-- ── 7. 요율표 ── -->
+  <section class="card">
+    <h2><span><span class="n">7</span> · 2026년 중개보수 요율표</span><span class="sub" id="rateSub"></span></h2>
+    <table class="rt-tbl" id="rateTbl"></table>
+    <p class="hint" id="rateFoot"></p>
+  </section>
+
+  <!-- ── 8. 절벽 ── -->
+  <section class="card">
+    <h2><span><span class="n">8</span> · 100만원 차이로 복비가 뛰는 지점</span><span class="sub" id="cliffSub"></span></h2>
+    <table class="ladder" id="cliffTbl"></table>
+    <div id="cliffNote"></div>
+  </section>
+
+  <!-- ── FAQ ── -->
+  <section class="card">
+    <h2><span>계약 전에 확인할 것들</span></h2>
+
+    <details>
+      <summary>복비는 누가, 몇 번 내나요?</summary>
+      <p>매도인과 매수인이 <b>각각</b> 냅니다(임대차는 임대인과 임차인이 각각). 한 사람이 양쪽 몫을 다 무는 게 아니라, 위에서 계산된 금액을 <b>각자 한 번씩</b> 내는 구조예요. 그래서 중개사무소 한 곳이 한 건에서 받는 총액은 계산 결과의 <b>2배</b>가 됩니다. 매도인 쪽과 매수인 쪽 중개사가 다른 <b>공동중개</b>라면 각 중개사가 자기 의뢰인에게서 한 건씩 받습니다.</p>
+    </details>
+
+    <details>
+      <summary>부가세 10%를 꼭 더 내야 하나요?</summary>
+      <p>중개보수는 <b>부가세 별도</b>가 원칙입니다. 다만 중개사무소의 과세유형에 따라 달라요. <b>일반과세자</b>면 10%를 붙여 세금계산서(또는 현금영수증)를 발급합니다. <b>간이과세자</b>는 세금계산서 발급이 안 되는 경우가 많고, 실무에서는 부가가치율을 반영해 <b>4% 안팎</b>으로 약정하는 게 보통입니다. 계약 전에 <b>사업자등록증의 과세유형</b>과 현금영수증·세금계산서 발급 여부를 물어보세요. 부가세는 중개보수 상한과 별개라, 부가세를 붙여 상한을 넘겼다고 위법이 되지는 않습니다.</p>
+    </details>
+
+    <details>
+      <summary>상한을 넘겨 요구하면 어떻게 하나요?</summary>
+      <p>「공인중개사법」 제33조가 금지하는 행위이고, 제49조에 따라 <b>1년 이하 징역 또는 1천만원 이하 벌금</b> 대상입니다. 판례는 상한을 넘는 약정을 <b>초과분 무효</b>로 보아 이미 낸 돈도 돌려받을 수 있다고 합니다. 계좌이체 내역과 영수증을 남기고, 관할 <b>시·군·구청 부동산중개업 담당부서</b>에 신고하면 됩니다. 다만 부가세는 별개 항목이니 헷갈리지 마세요.</p>
+    </details>
+
+    <details>
+      <summary>계약이 깨지면 복비를 내야 하나요?</summary>
+      <p>중개보수는 <b>거래계약이 성립</b>해야 청구할 수 있는 게 원칙입니다. 가계약금만 오간 단계라면 원칙적으로 청구 대상이 아니에요. 반대로 계약까지 갔다가 <b>의뢰인의 책임 있는 사유</b>로 해제된 경우에는 중개사가 보수를 받을 수 있다는 것이 통설·판례입니다. 중개사의 잘못으로 무효·취소·해제됐다면 받을 수 없습니다.</p>
+    </details>
+
+    <details>
+      <summary>같은 집을 매매하면서 임대차도 같이 중개하면?</summary>
+      <p>「공인중개사법 시행규칙」 제20조에 따라, 동일한 중개대상물에 대해 동일 당사자 사이에 <b>매매를 포함한 둘 이상의 거래</b>가 같은 기회에 이루어지면 <b>매매 기준</b>으로만 계산합니다. 매매 복비와 임대차 복비를 <b>따로 두 번</b> 받을 수 없습니다.</p>
+    </details>
+
+    <details>
+      <summary>월세에 관리비도 넣어서 계산하나요?</summary>
+      <p>아닙니다. 환산은 <b>차임(월세)만</b> 씁니다. 관리비, 주차비, 인터넷 사용료 같은 항목은 빼고 계산하세요. 계산식은 <b>보증금 + 월세 × 100</b>이고, 그 합이 <b>5천만원 미만</b>이면 <b>보증금 + 월세 × 70</b>으로 다시 계산합니다. 이 재산정은 세입자에게 <b>유리한</b> 규정이라, 소액 월세일수록 복비가 확 줄어듭니다. 참고로 2026년 8월 28일 시행 개정 시행규칙부터는 주택임대차 계약 전 <b>공동관리비 금액</b>도 중개사의 확인·설명 항목에 들어갑니다. 복비 계산에는 안 들어가지만, 계약 전에 반드시 듣고 넘어가세요.</p>
+    </details>
+
+    <details>
+      <summary>오피스텔은 왜 요율이 두 가지인가요?</summary>
+      <p>2015년 1월 6일 계약분부터 <b>전용 85㎡ 이하</b>이면서 <b>전용 입식 부엌·수세식 화장실·목욕시설</b>을 모두 갖춘 오피스텔은 주거용으로 보아 매매 <b>0.5%</b>, 임대차 <b>0.4%</b>를 적용합니다. 요건에서 하나라도 어긋나면 주택 외와 같은 <b>0.9%</b>예요. 참고로 2026년 8월 11일 공포돼 <b>8월 28일 시행</b>되는 개정 시행규칙에서 이 특례도 <b>“요율 한도 이내에서 협의하여 결정”</b>한다는 문구가 명확해졌습니다. 즉 0.5%·0.4%도 정가가 아니라 상한입니다.</p>
+    </details>
+
+    <details>
+      <summary>지역마다 요율이 다른가요?</summary>
+      <p>주택의 요율과 한도액은 <b>시·도 조례</b>로 정하게 되어 있습니다(「공인중개사법」 제32조). 2021년 개편 이후로는 사실상 전국이 같은 표를 쓰고 있어 이 계산기 값과 일치하지만, 계약 전에 해당 시·도 조례나 <b>중개사무소에 게시된 요율표</b>를 한 번 확인하는 게 정확합니다. 주택 외 <b>0.9%</b>는 전국 공통입니다.</p>
+    </details>
+
+    <details>
+      <summary>실비는 또 뭔가요?</summary>
+      <p>권리관계 확인 비용이나 계약금 등의 반환채무이행 보장에 실제로 쓴 돈은 <b>영수증을 첨부해</b> 중개보수와 별도로 청구할 수 있습니다. 다만 등기부등본 열람처럼 통상적인 확인·설명 업무에 드는 비용까지 실비로 얹는 건 맞지 않습니다. 금액이 크면 근거를 요구하세요.</p>
+    </details>
+
+    <details>
+      <summary>반값 복비 앱이나 할인 중개는 합법인가요?</summary>
+      <p>합법입니다. 법은 <b>상한</b>만 정해 두고 그 안에서 협의하도록 하고 있어서, 0원부터 상한까지 어떤 금액이든 합의하면 유효합니다. 다만 구두 약속은 잔금 때 뒤집히기 쉬우니, 합의한 금액을 <b>확인·설명서에 적고 서명</b>받아 두세요.</p>
+    </details>
+  </section>
+
+  <!-- ══ 주의 문구 ══ -->
+  <div class="nbx">
+    <div class="nbx-h"><span class="ic">!</span><span>계산 결과를 그대로 신뢰하지 마세요</span></div>
+    <ul>
+      <li>이 계산기는 <b>공개된 법령 · 요율 · 기준만으로 산출한 참고값</b>입니다.
+        실제 금액은 <b>개인과 세대의 구체적인 사정에 따라 달라질 수 있습니다.</b></li>
+      <li>법령 · 요율 · 정부 정책은 <b>수시로 바뀝니다.</b> 개정 직후에는 이 계산기에 아직 반영되지 않았을 수 있습니다.</li>
+      <li>최종 금액은 반드시 <b>개업공인중개사 또는 관할 시 · 군 · 구청</b>의 확인을 받으시기 바랍니다.</li>
+    </ul>
+    <p class="nbx-f">이 계산 결과는 <b>참고 자료일 뿐 법적 효력이 없으며</b>, 이를 근거로 한
+      판단 · 결정 · 신고 · 계약으로 발생한 어떠한 손해에 대해서도
+      <b>제작자와 운영자는 법적 책임을 지지 않습니다.</b></p>
+  </div>
+
+  <footer>
+    <b>중개수수료 계산기</b> · 복비 · 중개보수 · 매매 · 전세 · 월세 · 오피스텔 · 분양권 · 상가·토지<br>
+    근거: 「공인중개사법」 제32조·제33조·제49조, 같은 법 시행규칙 제20조 및 별표1, 시·도 중개보수 조례 (2026년 기준)<br>
+    상한요율 이내에서 협의로 정하는 금액이라, 이 계산기의 값은 <b>참고용</b>입니다. 확정 금액은 중개사무소 게시 요율표와 확인·설명서 기준입니다.<br>
+    함께 보면 좋은 도구: <a href="https://hwj-hub.github.io/loan_calculator/" target="_blank" rel="noopener">대출 이자 계산기</a> · <a href="https://hwj-hub.github.io/year_end_tax/" target="_blank" rel="noopener">연말정산 계산기</a> · <a href="https://hwj-hub.github.io/savings_calculator/" target="_blank" rel="noopener">적금 이자 계산기</a> · <a href="https://hwj-hub.github.io/household_budget/" target="_blank" rel="noopener">엑셀 가계부 만들기</a><br>
+    입력값은 어디에도 전송되지 않으며, 페이지를 연 뒤에는 인터넷 없이도 동작합니다 · 외부 라이브러리 없음
+  </footer>
+</div>
+
+<div id="toast"></div>
+
+<script>
+"use strict";
+const $  = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+
+/* ══ 요율표 · 공인중개사법 시행규칙 제20조 별표1 ══════════════════
+   lim = 구간 상한(미만), rate = 상한요율(만분율 정수), cap = 한도액(원, 0이면 없음)
+   요율을 0.6 같은 실수로 두면 15억 x 0.7% 가 10,499,999.99... 로 어긋난다.
+   법 조문 표기가 「1천분의 6」이므로 만분율 정수(60)로 두고 마지막에 나눈다.  */
+const RATE_SALE = [                                   // 주택 매매·교환
+  {lim:  50000000, rate:60, cap:250000, label:"5천만원 미만"},
+  {lim: 200000000, rate:50, cap:800000, label:"5천만원 ~ 2억원"},
+  {lim: 900000000, rate:40, cap:0,      label:"2억원 ~ 9억원"},
+  {lim:1200000000, rate:50, cap:0,      label:"9억원 ~ 12억원"},
+  {lim:1500000000, rate:60, cap:0,      label:"12억원 ~ 15억원"},
+  {lim:Infinity,   rate:70, cap:0,      label:"15억원 이상"}
+];
+const RATE_RENT = [                                   // 주택 임대차 등
+  {lim:  50000000, rate:50, cap:200000, label:"5천만원 미만"},
+  {lim: 100000000, rate:40, cap:300000, label:"5천만원 ~ 1억원"},
+  {lim: 600000000, rate:30, cap:0,      label:"1억원 ~ 6억원"},
+  {lim:1200000000, rate:40, cap:0,      label:"6억원 ~ 12억원"},
+  {lim:1500000000, rate:50, cap:0,      label:"12억원 ~ 15억원"},
+  {lim:Infinity,   rate:60, cap:0,      label:"15억원 이상"}
+];
+const OFFI_RATE = {sale:50, rent:40};                 // 주거용 오피스텔 특례
+const ETC_RATE  = 90;                                 // 주택 외 · 요건 미달 오피스텔
+const CONV_LINE = 50000000;                           // 월세 환산 재산정 기준선
+
+const PROP_NAME = {house:"주택", offi:"주거용 오피스텔", offi2:"그 밖의 오피스텔", etc:"상가·토지 등"};
+const DEAL_NAME = {sale:"매매·교환", jeonse:"전세", wolse:"월세"};
+
+/* ══ 상태 ══ */
+const D = {
+  deal:"sale", prop:"house", pre:false,
+  price:600000000, paid:200000000, premium:50000000,
+  deposit:300000000, wdeposit:10000000, monthly:500000,
+  vat:0, neg:100
+};
+const S = Object.assign({}, D);
+
+/* ══ 유틸 ══ */
+function won(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+function digits(el, fb){
+  const v = (el.value||"").replace(/[^0-9]/g,"");
+  return v === "" ? fb : Math.min(parseInt(v,10), 999999999999);
+}
+function fmtInput(el){
+  const raw = (el.value||"").replace(/[^0-9]/g,"");
+  el.value = raw === "" ? "" : won(parseInt(raw,10));
+}
+function hangul(v){                                   // 6억 500만 형태
+  v = Math.round(v);
+  if(!v) return "0원";
+  const eok = Math.floor(v/100000000), man = Math.floor((v%100000000)/10000), rest = v%10000;
+  const p = [];
+  if(eok)  p.push(eok + "억");
+  if(man)  p.push(won(man) + "만");
+  if(rest) p.push(won(rest));
+  return p.join(" ") + "원";
+}
+function pct(v){ return (Math.round(v*1000)/1000).toString(); }
+function rp(r){ return pct(r/100); }                  // 만분율 -> 퍼센트 표기
+
+/* ══ 계산 ══════════════════════════════════════════════════════
+   ① 거래금액 산정 → ② 구간 요율 → ③ 한도액 → ④ 협의 → ⑤ 부가세 */
+function feeOf(base, isRent, prop){
+  let rate, cap = 0, label = "", idx = -1;
+  if(prop === "house"){
+    const t = isRent ? RATE_RENT : RATE_SALE;
+    idx = t.findIndex(r => base < r.lim);
+    if(idx < 0) idx = t.length - 1;
+    rate = t[idx].rate; cap = t[idx].cap; label = t[idx].label;
+  }else if(prop === "offi"){
+    rate = isRent ? OFFI_RATE.rent : OFFI_RATE.sale;
+    label = "주거용 오피스텔 특례";
+  }else{
+    rate = ETC_RATE;
+    label = prop === "offi2" ? "요건 미달 오피스텔" : "주택 외";
+  }
+  const raw    = base * rate / 10000;
+  const capped = cap > 0 && raw > cap;
+  const legal  = Math.floor(capped ? cap : raw);
+  return {rate:rate, cap:cap, label:label, idx:idx, raw:raw, capped:capped, legal:legal};
+}
+
+function compute(){
+  const isRent = S.deal !== "sale";
+  let base = 0, conv = null, src = 0;
+
+  if(S.deal === "sale"){
+    base = S.pre ? (S.paid + S.premium) : S.price;
+    src  = base;
+  }else if(S.deal === "jeonse"){
+    base = S.deposit; src = base;
+  }else{
+    const first = S.wdeposit + S.monthly * 100;
+    if(first < CONV_LINE){
+      base = S.wdeposit + S.monthly * 70;
+      conv = {mult:70, first:first, redone:true};
+    }else{
+      base = first;
+      conv = {mult:100, first:first, redone:false};
+    }
+    src = S.wdeposit;
+  }
+
+  const f     = feeOf(base, isRent, S.prop);
+  const fee   = Math.floor(f.legal * S.neg / 100);
+  const vat   = Math.floor(fee * S.vat / 100);
+  const total = fee + vat;
+
+  return {
+    isRent:isRent, base:base, conv:conv, src:src,
+    rate:f.rate, cap:f.cap, band:f.label, idx:f.idx,
+    raw:f.raw, capped:f.capped, legal:f.legal,
+    fee:fee, vat:vat, total:total,
+    saved:f.legal - fee,
+    effRate: base > 0 ? fee / base * 100 : 0,
+    capRate: base > 0 ? f.legal / base * 100 : 0
+  };
+}
+
+/* ══ 화면 ══ */
+function render(){
+  const x = compute();
+  const rentWord = S.deal === "sale" ? "매수인" : "임차인";
+  const otherWord = S.deal === "sale" ? "매도인" : "임대인";
+
+  /* 헤더 서브 */
+  $("#dealSub").textContent = DEAL_NAME[S.deal];
+  $("#propSub").textContent = PROP_NAME[S.prop];
+  $("#amtSub").textContent  = "거래금액 " + hangul(x.base);
+  $("#resSub").textContent  = DEAL_NAME[S.deal] + " · " + PROP_NAME[S.prop];
+
+  /* 안내 문구 */
+  $("#dealHint").innerHTML = S.deal === "sale"
+    ? "교환은 <b>금액이 큰 쪽</b>을 거래금액으로 봅니다. 분양권이면 아래에서 스위치를 켜세요."
+    : S.deal === "jeonse"
+      ? "전세는 보증금이 곧 거래금액입니다. <b>6억원</b>을 넘는 순간 요율이 0.3% → 0.4%로 올라갑니다."
+      : "보증금과 월세를 <b>환산보증금</b> 하나로 합쳐 계산합니다. 관리비는 넣지 마세요.";
+
+  $("#propHint").innerHTML = S.prop === "house"
+    ? "아파트·연립·다세대·단독주택과 그 부속토지. 주택 <b>분양권</b>도 주택 요율을 씁니다."
+    : S.prop === "offi"
+      ? "특례 요율 <b class='em'>매매 0.5% · 임대차 0.4%</b>. 한도액은 없습니다."
+      : S.prop === "offi2"
+        ? "요건을 못 채운 오피스텔은 주택 외와 같은 <b class='em'>0.9%</b>입니다."
+        : "상가·사무실·토지·공장 등은 구간 없이 <b class='em'>0.9% 이내 협의</b> 하나로 끝입니다.";
+
+  $("#offiReq").classList.toggle("hide", S.prop !== "offi" && S.prop !== "offi2");
+  $("#preRow").classList.toggle("hide", S.deal !== "sale");
+
+  $("#vatHint").innerHTML = S.vat === 0
+    ? "부가세를 따로 받지 않거나 <b>보수에 포함</b>하기로 합의한 경우입니다."
+    : S.vat === 10
+      ? "연매출 8천만원 이상 <b>일반과세자</b>. 세금계산서·현금영수증을 요구하세요."
+      : "연매출 8천만원 미만 <b>간이과세자</b>. 부가가치율을 반영해 실무상 <b>4% 안팎</b>으로 약정합니다.";
+
+  /* 패널 전환 */
+  $("#paneSale").classList.toggle("hide",   S.deal !== "sale");
+  $("#paneJeonse").classList.toggle("hide", S.deal !== "jeonse");
+  $("#paneWolse").classList.toggle("hide",  S.deal !== "wolse");
+  $("#salePlain").classList.toggle("hide", S.pre);
+  $("#salePre").classList.toggle("hide",  !S.pre);
+
+  /* 월세 환산 안내 */
+  if(S.deal === "wolse" && x.conv){
+    $("#convNote").className = "note " + (x.conv.redone ? "ok" : "info");
+    $("#convNote").innerHTML = x.conv.redone
+      ? "보증금 + 월세 × 100 = <b>" + won(x.conv.first) + "원</b> 으로 5천만원에 못 미쳐서, "
+        + "<b>월세 × 70</b> 으로 다시 계산합니다. → 환산보증금 <b>" + won(x.base) + "원</b>. "
+        + "이 규정 덕분에 복비가 줄었습니다."
+      : "환산보증금 = 보증금 + 월세 × 100 = <b>" + won(x.base) + "원</b>. "
+        + "합이 5천만원 미만이면 × 70 으로 다시 계산합니다.";
+  }
+
+  /* ── 결과 카드 ── */
+  $("#resBig").innerHTML = won(x.total) + "<small>원</small>";
+  $("#resCap").textContent =
+    hangul(x.base) + " · " + x.band + " · " + (S.neg < 100 ? "상한의 " + S.neg + "%로 협의" : "상한요율 그대로");
+
+  $("#kvAmt").textContent    = hangul(x.base);
+  $("#kvAmtSub").textContent = S.deal === "wolse" ? "환산보증금" : (S.pre ? "납입액+P" : "계약금액");
+  $("#kvRate").textContent   = rp(x.rate) + "%";
+  $("#kvRateSub").textContent= x.capped ? "실질 " + pct(x.capRate) + "%" : x.band;
+  $("#kvCap").textContent    = won(x.legal) + "원";
+  $("#kvCapSub").textContent = x.capped ? "한도액 적용" : "협의 전 최대";
+  $("#kvVat").textContent    = S.vat ? won(x.vat) + "원" : "없음";
+  $("#kvVatSub").textContent = S.vat ? S.vat + "% 별도" : "별도 청구 없음";
+
+  let flag;
+  if(x.capped)          flag = "🛡 한도액이 걸려 " + won(Math.floor(x.raw) - x.legal) + "원 덜 냅니다";
+  else if(S.neg < 100)  flag = "✂ 협의로 " + won(x.saved) + "원 절약";
+  else                  flag = "⚠ 지금은 법정 상한 그대로입니다";
+  $("#resFlag").textContent = flag;
+
+  $("#resPlate").innerHTML =
+    "이 금액은 <b>나 한 사람</b>이 내는 돈입니다. " + otherWord + "도 같은 금액을 따로 내므로 "
+    + "중개사무소가 이 거래 하나에서 받는 총액은 <b>" + won(x.total * 2) + "원</b>입니다. "
+    + "(" + rentWord + " 기준으로 계산했지만 " + otherWord + " 금액도 같습니다.)";
+
+  /* ── 협의 슬라이더 ── */
+  $("#negRate").innerHTML = pct(x.effRate) + "<small>%</small>"
+    + "<i>" + (S.neg < 100 ? "상한요율 " + rp(x.rate) + "% 의 " + S.neg + "%" : "상한요율 그대로") + "</i>";
+  $("#negSave").textContent = won(x.saved) + "원";
+  $("#negSvWrap").classList.toggle("none", x.saved === 0);
+  const sl = $("#negSlider");
+  sl.value = S.neg;
+  const fill = (S.neg - 50) / 50 * 100;
+  sl.style.setProperty("--trk",
+    "linear-gradient(90deg,var(--accent) " + fill + "%,var(--line) " + fill + "%)");
+
+  /* ── 명세 ── */
+  $("#detailSub").textContent = S.neg < 100 ? "협의 " + S.neg + "% 반영" : "법정 상한 기준";
+  const L = [];
+  const line = (k, v, cls) => L.push('<tr class="' + (cls||"") + '"><td>' + k + '</td><td>' + v + '</td></tr>');
+
+  if(S.deal === "sale"){
+    if(S.pre){
+      line("지금까지 낸 돈", won(S.paid) + "원", "op");
+      line("프리미엄", "+ " + won(S.premium) + "원", "op");
+    }else{
+      line("매매가격", won(S.price) + "원");
+    }
+  }else if(S.deal === "jeonse"){
+    line("전세보증금", won(S.deposit) + "원");
+  }else{
+    line("보증금", won(S.wdeposit) + "원", "op");
+    line("월세 × 100", "+ " + won(S.monthly * 100) + "원", "op");
+    if(x.conv.redone){
+      line("합계 " + won(x.conv.first) + "원 <span class='rt'>5천만원 미만이라 다시 계산</span>", "× 70 재산정", "op");
+      line("월세 × 70", "+ " + won(S.monthly * 70) + "원", "op");
+    }
+  }
+  line("<b>거래금액</b>", won(x.base) + "원 <span class='rt'>" + hangul(x.base) + "</span>");
+  line("상한요율 <span class='rt'>" + x.band + "</span>", rp(x.rate) + "%");
+  line("거래금액 × 상한요율", won(Math.floor(x.raw)) + "원", "op");
+  if(x.capped)
+    line("한도액 " + won(x.cap) + "원 적용", "− " + won(Math.floor(x.raw) - x.legal) + "원", "op minus");
+  line("법정 상한 중개보수", won(x.legal) + "원");
+  if(S.neg < 100)
+    line("협의 할인 " + (100 - S.neg) + "%", "− " + won(x.saved) + "원", "op minus");
+  line("중개보수", won(x.fee) + "원");
+  if(S.vat) line("부가가치세 " + S.vat + "%", "+ " + won(x.vat) + "원", "op");
+  line("최종 지급액 <span class='rt'>1인 기준</span>", won(x.total) + "원", "em");
+  $("#detailTbl").innerHTML = L.join("");
+
+  $("#mOne").textContent  = won(x.total) + "원";
+  $("#mBoth").textContent = won(x.total * 2) + "원";
+  $("#mEff").textContent  = x.base > 0 ? (Math.round(x.total / x.base * 10000) / 100) + "%" : "-";
+
+  let dn = "";
+  if(x.capped)
+    dn = '<div class="note ok"><b>한도액이 요율보다 먼저 걸렸습니다.</b> 소액 구간에는 요율과 별도로 한도액이 있어서, '
+       + '계산상 ' + won(Math.floor(x.raw)) + '원이 나와도 <b>' + won(x.cap) + '원</b>을 넘길 수 없습니다.</div>';
+  else if(S.neg < 100)
+    dn = '<div class="note ok">상한 대비 <b>' + won(x.saved) + '원</b>을 아꼈습니다. 쌍방 기준으로는 '
+       + won(x.saved * 2) + '원 차이입니다.</div>';
+  else
+    dn = '<div class="note warn"><b>협의를 한 번도 반영하지 않은 금액입니다.</b> 요율표의 숫자는 상한일 뿐이라 '
+       + '이대로 내야 할 의무는 없습니다. 5번 슬라이더를 움직여 보세요.</div>';
+  $("#detailNote").innerHTML = dn;
+
+  renderRateTable(x);
+  renderCliff(x);
+}
+
+/* ── 요율표 ── */
+function renderRateTable(x){
+  const isRent = x.isRent;
+  $("#rateSub").textContent = S.prop === "house"
+    ? (isRent ? "주택 임대차" : "주택 매매·교환")
+    : PROP_NAME[S.prop];
+
+  let html = "";
+  if(S.prop === "house"){
+    const t = isRent ? RATE_RENT : RATE_SALE;
+    html += "<tr><th>거래금액</th><th>상한요율</th><th>한도액</th></tr>";
+    t.forEach((r, i) => {
+      html += '<tr class="' + (i === x.idx ? "hl" : "") + '"><td>' + r.label + "</td><td>"
+            + rp(r.rate) + "%</td><td>" + (r.cap ? won(r.cap) + "원" : "—") + "</td></tr>";
+    });
+  }else{
+    html += "<tr><th>구분</th><th>매매·교환</th><th>임대차</th></tr>";
+    const rows = [
+      {k:"offi",  n:"주거용 오피스텔<br><span style='font-weight:500'>85㎡ 이하 · 부엌·화장실·목욕시설</span>", s:"0.5%", r:"0.4%"},
+      {k:"offi2", n:"그 밖의 오피스텔", s:"0.9%", r:"0.9%"},
+      {k:"etc",   n:"주택 외<br><span style='font-weight:500'>상가·사무실·토지·공장</span>", s:"0.9%", r:"0.9%"}
+    ];
+    rows.forEach(r => {
+      html += '<tr class="' + (r.k === S.prop ? "hl" : "") + '"><td>' + r.n + "</td><td>"
+            + r.s + "</td><td>" + r.r + "</td></tr>";
+    });
+  }
+  $("#rateTbl").innerHTML = html;
+
+  $("#rateFoot").innerHTML = S.prop === "house"
+    ? "주택 요율·한도액은 <b>시·도 조례</b>로 정합니다(「공인중개사법」 제32조). 2021년 개편 이후 전국이 사실상 같은 표를 쓰고 있습니다. "
+      + "표의 숫자는 <b>상한</b>이고, 실제 금액은 그 안에서 협의로 정합니다."
+    : "오피스텔·주택 외는 <b>한도액이 없습니다</b>. 2026년 8월 28일 시행되는 개정 시행규칙에서 주거용 오피스텔 특례도 "
+      + "<b>“요율 한도 이내에서 협의하여 결정”</b>한다는 문구가 명시됩니다.";
+}
+
+/* ── 구간 절벽 ── */
+function renderCliff(x){
+  const el = $("#cliffTbl"), note = $("#cliffNote");
+
+  if(S.prop !== "house"){
+    $("#cliffSub").textContent = "단일 요율";
+    const rate = S.prop === "offi" ? (x.isRent ? OFFI_RATE.rent : OFFI_RATE.sale) : ETC_RATE;
+    const samples = [50000000, 100000000, 300000000, 500000000, 1000000000];
+    let h = "<tr><th>거래금액</th><th>상한 중개보수</th></tr>";
+    samples.forEach(v => {
+      const f = Math.floor(v * rate / 10000);
+      const w = Math.min(100, v / 1000000000 * 100);
+      const near = Math.abs(v - x.base) < Math.max(v, x.base) * 0.05;
+      h += '<tr class="' + (near ? "now" : "") + '">'
+         + '<td><div class="cell"><span class="bg" style="width:' + w + '%"></span>'
+         + '<div class="yr">' + hangul(v) + "</div></div></td>"
+         + '<td><div class="cell"><div class="am">' + won(f) + "원</div></div></td></tr>";
+    });
+    el.innerHTML = h;
+    note.innerHTML = '<div class="note info">' + PROP_NAME[S.prop] + '은 거래금액과 상관없이 요율이 <b>'
+      + rp(rate) + '% 하나</b>라, 금액이 오른다고 요율이 뛰는 절벽이 없습니다. 대신 <b>한도액도 없어서</b> '
+      + '고액 거래에서는 주택보다 훨씬 비싸집니다.</div>';
+    return;
+  }
+
+  $("#cliffSub").textContent = x.isRent ? "주택 임대차" : "주택 매매";
+  const t = x.isRent ? RATE_RENT : RATE_SALE;
+  const bounds = t.slice(0, -1).map(r => r.lim);
+  const STEP = 1000000;                                // 경계 100만원 아래
+  const maxFee = Math.floor(bounds[bounds.length-1] * t[t.length-1].rate / 10000);
+
+  let h = "<tr><th>거래금액</th><th>상한 중개보수</th></tr>", rows = 0;
+  bounds.forEach(b => {
+    const lo = feeOf(b - STEP, x.isRent, "house").legal;
+    const hi = feeOf(b,        x.isRent, "house").legal;
+    const gap = hi - lo;
+    const nearLo = x.base >= b - STEP * 3 && x.base < b;
+    const nearHi = x.base >= b && x.base < b + STEP * 3;
+    h += '<tr class="' + (nearLo ? "now " : "") + 'cliff">'
+       + '<td><div class="cell"><span class="bg" style="width:' + (lo/maxFee*100) + '%"></span>'
+       + '<div class="yr">' + hangul(b - STEP) + "</div></div></td>"
+       + '<td><div class="cell"><div class="am">' + won(lo) + "원</div></div></td></tr>";
+    h += '<tr class="' + (nearHi ? "now" : "") + '">'
+       + '<td><div class="cell"><span class="bg" style="width:' + (hi/maxFee*100) + '%"></span>'
+       + '<div class="yr">' + hangul(b) + '<i>100만원 더 비싼 집</i></div></div></td>'
+       + '<td><div class="cell"><div class="am">' + won(hi) + "원"
+       + (gap > 0 ? '<i>▲ ' + won(gap) + "원</i>" : '<i class="flat">차이 없음</i>')
+       + "</div></div></td></tr>";
+    rows++;
+  });
+  el.innerHTML = h;
+
+  /* 내 금액이 경계 바로 위인지 */
+  let msg = "";
+  for(let i = 0; i < bounds.length; i++){
+    const b = bounds[i];
+    if(x.base >= b && x.base <= b * 1.02){
+      const now  = feeOf(x.base, x.isRent, "house").legal;
+      const down = feeOf(b - STEP, x.isRent, "house").legal;
+      if(now - down > 0){
+        msg = '<div class="note warn"><b>' + hangul(b) + ' 선을 갓 넘겼습니다.</b> 거래금액이 '
+            + hangul(b - STEP) + '이었다면 상한 중개보수가 <b>' + won(down) + '원</b>이라, 지금보다 '
+            + '<b>' + won(now - down) + '원</b> 적습니다. 쌍방 기준으로는 ' + won((now - down) * 2)
+            + '원 차이예요.</div>';
+      }
+      break;
+    }
+  }
+  if(!msg)
+    msg = '<div class="note info">저가 구간(<b>5천만원·' + (x.isRent ? "1억원" : "2억원")
+        + '</b> 경계)은 <b>한도액</b>이 요율 인상을 정확히 상쇄해서 절벽이 없습니다. '
+        + '반면 <b>' + (x.isRent ? "6억·12억·15억" : "9억·12억·15억")
+        + '원</b> 경계는 한도액이 없어 100만원 차이로 복비가 수십만원씩 뜁니다.</div>';
+  note.innerHTML = msg;
+}
+
+/* ══ UI 동기화 ══ */
+function syncUI(){
+  $$("#dealSeg button").forEach(b => b.classList.toggle("on", b.dataset.d === S.deal));
+  $$("#propSeg button").forEach(b => b.classList.toggle("on", b.dataset.p === S.prop));
+  $$("#vatSeg button").forEach(b  => b.classList.toggle("on", +b.dataset.v === S.vat));
+  $("#preTg").classList.toggle("on", S.pre);
+  $$("#priceChips .chip").forEach(c   => c.classList.toggle("on", +c.dataset.v === S.price));
+  $$("#depositChips .chip").forEach(c => c.classList.toggle("on", +c.dataset.v === S.deposit));
+  $$("#wolseChips .chip").forEach(c   =>
+    c.classList.toggle("on", +c.dataset.d === S.wdeposit && +c.dataset.m === S.monthly));
+  $$("#negChips .chip").forEach(c     => c.classList.toggle("on", +c.dataset.n === S.neg));
+}
+function refresh(){ syncUI(); render(); }
+
+/* ══ 이벤트 ══ */
+$$("#dealSeg button").forEach(b => b.addEventListener("click", () => { S.deal = b.dataset.d; refresh(); }));
+$$("#propSeg button").forEach(b => b.addEventListener("click", () => { S.prop = b.dataset.p; refresh(); }));
+$$("#vatSeg button").forEach(b  => b.addEventListener("click", () => { S.vat  = +b.dataset.v; refresh(); }));
+$("#preSw").addEventListener("click", () => { S.pre = !S.pre; refresh(); });
+
+function bindMoney(id, key, chipsId){
+  const el = $("#" + id);
+  el.addEventListener("input", () => {
+    const pos = el.selectionStart, len = el.value.length;
+    S[key] = digits(el, 0);
+    fmtInput(el);
+    const d = el.value.length - len;
+    try{ el.setSelectionRange(Math.max(0, pos + d), Math.max(0, pos + d)); }catch(e){}
+    refresh();
+  });
+  el.addEventListener("blur", () => { if(S[key]) el.value = won(S[key]); });
+  if(chipsId) $$("#" + chipsId + " .chip").forEach(c => c.addEventListener("click", () => {
+    S[key] = +c.dataset.v; el.value = won(S[key]); refresh();
+  }));
+}
+bindMoney("price",    "price",    "priceChips");
+bindMoney("paid",     "paid",     null);
+bindMoney("premium",  "premium",  null);
+bindMoney("deposit",  "deposit",  "depositChips");
+bindMoney("wdeposit", "wdeposit", null);
+bindMoney("monthly",  "monthly",  null);
+
+$$("#wolseChips .chip").forEach(c => c.addEventListener("click", () => {
+  S.wdeposit = +c.dataset.d; S.monthly = +c.dataset.m;
+  $("#wdeposit").value = won(S.wdeposit);
+  $("#monthly").value  = won(S.monthly);
+  refresh();
+}));
+
+$("#negSlider").addEventListener("input", e => { S.neg = +e.target.value; refresh(); });
+$$("#negChips .chip").forEach(c => c.addEventListener("click", () => { S.neg = +c.dataset.n; refresh(); }));
+
+$("#resetBtn").addEventListener("click", () => {
+  Object.assign(S, D);
+  $("#price").value    = won(S.price);
+  $("#paid").value     = won(S.paid);
+  $("#premium").value  = won(S.premium);
+  $("#deposit").value  = won(S.deposit);
+  $("#wdeposit").value = won(S.wdeposit);
+  $("#monthly").value  = won(S.monthly);
+  refresh(); toast("초기값으로 되돌렸습니다");
+});
+
+$("#copyBtn").addEventListener("click", () => {
+  const x = compute();
+  const L = [];
+  L.push("■ 부동산 중개수수료 계산 (2026년 기준)");
+  L.push("");
+  L.push("계약 : " + DEAL_NAME[S.deal] + " / " + PROP_NAME[S.prop] + (S.pre ? " (분양권)" : ""));
+  if(S.deal === "wolse"){
+    L.push("보증금 " + won(S.wdeposit) + "원 + 월세 " + won(S.monthly) + "원");
+    L.push("환산보증금 : 보증금 + 월세 × " + x.conv.mult + " = " + won(x.base) + "원"
+      + (x.conv.redone ? " (5천만원 미만이라 ×70 재산정)" : ""));
+  }else if(S.pre){
+    L.push("납입액 " + won(S.paid) + "원 + 프리미엄 " + won(S.premium) + "원");
+  }
+  L.push("거래금액 : " + won(x.base) + "원 (" + hangul(x.base) + ")");
+  L.push("");
+  L.push("적용 구간 : " + x.band);
+  L.push("상한요율 : " + rp(x.rate) + "%" + (x.cap ? " (한도액 " + won(x.cap) + "원)" : ""));
+  L.push("법정 상한 중개보수 : " + won(x.legal) + "원" + (x.capped ? " ← 한도액 적용" : ""));
+  if(S.neg < 100) L.push("협의 " + S.neg + "% 적용 : " + won(x.fee) + "원 (" + won(x.saved) + "원 절약)");
+  if(S.vat)       L.push("부가가치세 " + S.vat + "% : " + won(x.vat) + "원");
+  L.push("─────────────");
+  L.push("최종 지급액(1인) : " + won(x.total) + "원");
+  L.push("쌍방 합계 : " + won(x.total * 2) + "원");
+  L.push("");
+  L.push("※ 상한요율 이내에서 협의로 정하는 금액이라 참고용입니다.");
+  L.push("※ 확정 금액은 중개사무소 게시 요율표 · 확인·설명서 기준");
+  const t = L.join("\n");
+  const done = () => toast("결과를 복사했습니다");
+  if(navigator.clipboard && navigator.clipboard.writeText)
+    navigator.clipboard.writeText(t).then(done).catch(() => fallback(t, done));
+  else fallback(t, done);
+});
+
+function fallback(t, done){
+  const ta = document.createElement("textarea");
+  ta.value = t; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand("copy"); done(); }catch(e){ toast("복사에 실패했습니다"); }
+  document.body.removeChild(ta);
+}
+
+let tt;
+function toast(msg){
+  const el = $("#toast");
+  el.textContent = msg; el.classList.add("show");
+  clearTimeout(tt); tt = setTimeout(() => el.classList.remove("show"), 1900);
+}
+
+refresh();
+</script>
+</body>
+</html>
